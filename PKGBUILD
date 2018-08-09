@@ -4,32 +4,26 @@ pkgbase=manjaro-settings-manager
 pkgname=('manjaro-settings-manager' 'manjaro-settings-manager-kcm' 
          'manjaro-settings-manager-notifier' 'manjaro-settings-manager-knotifier')
 pkgver=0.5.4
-pkgrel=14
+_commit=817fa9fac4d4275ada220d2de0d1b5540f67b5a9
+pkgrel=15
 pkgdesc="Manjaro Linux System Settings Tool"
 arch=('i686' 'x86_64')
 url="https://gitlab.manjaro.org/applications/manjaro-settings-manager"
 license=("GPL")
-depends=('icu>=61.1' 'qt5-base>=5.9.1' 'hwinfo' 'kitemmodels' 'kauth' 
+depends=('icu<63.0' 'qt5-base>=5.9.1' 'hwinfo' 'kitemmodels' 'kauth' 
          'kcoreaddons' 'ckbcomp' 'xdg-utils')
 optdepends=('manjaro-settings-manager-notifier: qt-based'
             'manjaro-settings-manager-knotifier: knotifications-based')
 makedepends=('extra-cmake-modules' 'kdoctools' 'qt5-tools' 'knotifications' 
              'kconfigwidgets' 'kcmutils')
 conflicts=('kcm-msm')
-source=("msm-$pkgver-$pkgrel.tar.gz::$url/-/archive/$pkgver/$pkgname-pkgver.tar.gz"
-        "icu61.patch::$url/commit/b49453649ba5e8bf39ed4361807f6be9e1dac3cd.diff"
-        "140.patch::$url/commit/b329c132e1043e0462e0ccb39cc0eecc186d2cfb.diff"
-        "pacman51.patch::$url/commit/d60f1db3f9a2fbadf8c330ae072a4f2b69e3d253.diff")
-sha256sums=('1666bb12849be0d020c31ced9866de9b0ee03f16914b425511094fa772dfbb0b'
-            '8bf306d12fae9994f2037ea29720a8d88c7513f73772ccb3d637138f3053ac3a'
-            'fee9a14a8438d315edd5d625ca1647fcf334a303e053f1d1c278422426926e48'
-            '34d3b92ef5f1c8c86060a6f65b2fc1dbed738e7800fa61a2579263d5991ff652')
+source=("msm-$pkgver-$pkgrel.tar.gz::$url/-/archive/$_commit/$pkgname-$_commit.tar.gz")
+sha256sums=('b9a33fb7d2caaf92f5bff42103d59d759cc357b4a630a4f0746de59f03094d8a')
 
 prepare() {
+  mv ${pkgbase}-${_commit} ${pkgbase}-${pkgver}
   cd "$srcdir/${pkgbase}-${pkgver}"
-  patch -p1 -i "$srcdir/icu61.patch"
-  patch -p1 -i "$srcdir/140.patch"
-  patch -p1 -i "$srcdir/pacman51.patch"
+  # patches here
 }
 
 build() {
