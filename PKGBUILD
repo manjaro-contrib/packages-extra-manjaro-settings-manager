@@ -5,7 +5,7 @@ pkgname=('manjaro-settings-manager' 'manjaro-settings-manager-kcm'
          'manjaro-settings-manager-notifier' 'manjaro-settings-manager-knotifier')
 pkgver=0.5.5
 _commit=c893e385075a596cafd51bf13535027a106c0b7a
-pkgrel=4
+pkgrel=5
 pkgdesc="Manjaro Linux System Settings Tool"
 arch=('i686' 'x86_64')
 url="https://gitlab.manjaro.org/applications/manjaro-settings-manager"
@@ -17,13 +17,18 @@ optdepends=('manjaro-settings-manager-notifier: qt-based'
 makedepends=('extra-cmake-modules' 'kdoctools' 'qt5-tools' 'knotifications' 
              'kconfigwidgets' 'kcmutils')
 conflicts=('kcm-msm')
-source=("msm-$pkgver-$pkgrel.tar.gz::$url/-/archive/$_commit/$pkgname-$_commit.tar.gz")
-sha256sums=('fbdb878af6b2c159349b81ad8bfaae75230c0784f85860eac730b43dd75f1fda')
+source=("msm-$pkgver-$pkgrel.tar.gz::$url/-/archive/$_commit/$pkgname-$_commit.tar.gz"
+        't_d_checkbox.patch')
+sha256sums=('fbdb878af6b2c159349b81ad8bfaae75230c0784f85860eac730b43dd75f1fda'
+            '1efd1e38e0b70332efb445961f18a3e78b30858a023de760989425ea22ace126')
 
 prepare() {
   mv ${pkgbase}-${_commit} ${pkgbase}-${pkgver}
   cd "$srcdir/${pkgbase}-${pkgver}"
   # patches here
+
+  # https://gitlab.manjaro.org/applications/manjaro-settings-manager/issues/154
+  patch -p1 -i ../t_d_checkbox.patch
 }
 
 build() {
