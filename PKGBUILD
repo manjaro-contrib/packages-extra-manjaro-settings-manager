@@ -5,12 +5,12 @@ pkgname=('manjaro-settings-manager' 'manjaro-settings-manager-kcm'
          'manjaro-settings-manager-notifier' 'manjaro-settings-manager-knotifier')
 pkgver=0.5.5
 _commit=c893e385075a596cafd51bf13535027a106c0b7a
-pkgrel=5
+pkgrel=7
 pkgdesc="Manjaro Linux System Settings Tool"
 arch=('i686' 'x86_64')
 url="https://gitlab.manjaro.org/applications/manjaro-settings-manager"
 license=("GPL")
-depends=('icu<63.2' 'qt5-base>=5.9.1' 'hwinfo' 'kitemmodels' 'kauth' 
+depends=('icu<64.2' 'qt5-base>=5.12.2' 'hwinfo' 'kitemmodels' 'kauth' 
          'kcoreaddons' 'ckbcomp' 'xdg-utils')
 optdepends=('manjaro-settings-manager-notifier: qt-based'
             'manjaro-settings-manager-knotifier: knotifications-based')
@@ -18,9 +18,13 @@ makedepends=('extra-cmake-modules' 'kdoctools' 'qt5-tools' 'knotifications'
              'kconfigwidgets' 'kcmutils')
 conflicts=('kcm-msm')
 source=("msm-$pkgver-$pkgrel.tar.gz::$url/-/archive/$_commit/$pkgname-$_commit.tar.gz"
-        't_d_checkbox.patch')
+        't_d_checkbox.patch'
+        're-order_previous.patch'
+        'language_packages.patch')
 sha256sums=('fbdb878af6b2c159349b81ad8bfaae75230c0784f85860eac730b43dd75f1fda'
-            '1efd1e38e0b70332efb445961f18a3e78b30858a023de760989425ea22ace126')
+            '1efd1e38e0b70332efb445961f18a3e78b30858a023de760989425ea22ace126'
+            '7015934cb191947b4736091064e30c6a05919db0ad0cd2c8f4f73c4f6b9ebe9f'
+            '4382edc3c5c123fcdbe3b1b307114e577d2cef629ca4f6db88fbbf519febe520')
 
 prepare() {
   mv ${pkgbase}-${_commit} ${pkgbase}-${pkgver}
@@ -29,6 +33,8 @@ prepare() {
 
   # https://gitlab.manjaro.org/applications/manjaro-settings-manager/issues/154
   patch -p1 -i ../t_d_checkbox.patch
+  patch -p1 -i ../re-order_previous.patch
+  patch -p1 -i ../language_packages.patch
 }
 
 build() {

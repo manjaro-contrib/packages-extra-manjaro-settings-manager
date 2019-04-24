@@ -1,0 +1,72 @@
+From 5e5b72fbaf79778f6bef4937db799c90cd7a9460 Mon Sep 17 00:00:00 2001
+From: Kacper <vfjpl1@gmail.com>
+Date: Sat, 20 Apr 2019 21:08:06 +0200
+Subject: [PATCH] reorder previous commit code
+
+---
+ src/modules/timedate/TimeDateCommon.cpp  | 1 -
+ src/modules/timedate/TimeDatePage.cpp    | 2 +-
+ src/modules/timedate/TimeDateService.cpp | 7 +++----
+ src/modules/timedate/TimeZoneWidget.cpp  | 3 ++-
+ 4 files changed, 6 insertions(+), 7 deletions(-)
+
+diff --git a/src/modules/timedate/TimeDateCommon.cpp b/src/modules/timedate/TimeDateCommon.cpp
+index 4ab476b..8cbe9b9 100644
+--- a/src/modules/timedate/TimeDateCommon.cpp
++++ b/src/modules/timedate/TimeDateCommon.cpp
+@@ -22,7 +22,6 @@
+ #include "TimeZoneDialog.h"
+ 
+ #include <QtCore/QTimeZone>
+-#include <QDebug>
+ 
+ QString
+ TimeDateCommon::getName()
+diff --git a/src/modules/timedate/TimeDatePage.cpp b/src/modules/timedate/TimeDatePage.cpp
+index f57836f..341199d 100644
+--- a/src/modules/timedate/TimeDatePage.cpp
++++ b/src/modules/timedate/TimeDatePage.cpp
+@@ -113,7 +113,7 @@ void
+ TimeDatePage::save()
+ {
+     TimeDateCommon::save( ui, m_timeDateService, m_isTimeEdited, m_isDateEdited, m_timeZone );
+-    this -> setApplyEnabled( this, false );
+     m_isTimeEdited = false;
+     m_isDateEdited = false;
++    this -> setApplyEnabled( this, false );
+ }
+diff --git a/src/modules/timedate/TimeDateService.cpp b/src/modules/timedate/TimeDateService.cpp
+index e336d78..43a7478 100644
+--- a/src/modules/timedate/TimeDateService.cpp
++++ b/src/modules/timedate/TimeDateService.cpp
+@@ -26,10 +26,9 @@ TimeDateService::TimeDateService( QObject* parent ) :
+     QObject( parent )
+ {
+     m_dbusInterface = new QDBusInterface( "org.freedesktop.timedate1",
+-                                         "/org/freedesktop/timedate1",
+-                                         "org.freedesktop.timedate1",
+-                                         QDBusConnection::systemBus(),
+-                                         0 );
++                                          "/org/freedesktop/timedate1",
++                                          "org.freedesktop.timedate1",
++                                          QDBusConnection::systemBus() );
+ }
+ 
+ 
+diff --git a/src/modules/timedate/TimeZoneWidget.cpp b/src/modules/timedate/TimeZoneWidget.cpp
+index c6d22f0..ff8a782 100644
+--- a/src/modules/timedate/TimeZoneWidget.cpp
++++ b/src/modules/timedate/TimeZoneWidget.cpp
+@@ -45,7 +45,8 @@ TimeZoneWidget::TimeZoneWidget( QWidget* parent ) :
+     // Zone images
+     QStringList zones = QString( ZONES ).split( " ", QString::SkipEmptyParts );
+     for ( int i = 0; i < zones.size(); ++i )
+-        m_timeZoneImages.append( QImage( ":/images/timezone_" + zones.at( i ) + ".png" ).scaled( X_SIZE, Y_SIZE, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ) );
++        m_timeZoneImages.append( QImage( ":/images/timezone_" + zones.at( i ) + ".png" )
++                                 .scaled( X_SIZE, Y_SIZE, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ) );
+ 
+     LocaleGlobal::init();
+ }
+-- 
+2.21.0
+
