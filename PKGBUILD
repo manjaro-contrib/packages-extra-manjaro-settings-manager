@@ -20,7 +20,7 @@ makedepends=('extra-cmake-modules' 'kdoctools' 'qt5-tools' 'knotifications'
 conflicts=('kcm-msm')
 source=(#"msm-$pkgver-$pkgrel.tar.gz::$url/-/archive/$pkgver/$pkgbase-$pkgver.tar.gz")
         "msm-$pkgver-$pkgrel-$_commit.tar.gz::$url/-/archive/$_commit/$pkgbase-$_commit.tar.gz")
-sha256sums=('bd705a9961acd41d4fbdd2b41787b0927d9f4f90ff265d1e8f31d8c94ba70f5c')
+sha256sums=('900dda920cd6818a12cd0588fbe989269d00d9c5efaf01d2bfb17d0d6ebbe0d2')
 
 prepare() {
   mv ${pkgbase}-${_commit} ${pkgbase}-${pkgver}
