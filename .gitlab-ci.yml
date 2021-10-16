@@ -12,6 +12,7 @@ trigger-CI:
     - 'sed -i -e "s/package:.*/package: $PACKAGE/" build-package.yml'
     - 'sed -i -e "s/ repo:.*/ repo: $REPO/" build-package.yml'
     - 'sed -i -e "s/source:.*/source: $SOURCE/" build-package.yml'
+    - 'sed -i -e "s/# built.*/# built $(date)/" build-package.yml'
     - git add build-package.yml
     - 'git commit -m"build $PACKAGE"'
     - git push
