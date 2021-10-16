@@ -5,8 +5,8 @@ pkgbase=manjaro-settings-manager
 pkgname=('manjaro-settings-manager' 'manjaro-settings-manager-kcm' 
          'manjaro-settings-manager-notifier' 'manjaro-settings-manager-knotifier')
 pkgver=0.5.6
-_commit=d7ce0fae
-pkgrel=18
+_commit=353779d4
+pkgrel=19
 pkgdesc="Manjaro Linux System Settings Tool"
 arch=('x86_64')
 url="https://gitlab.manjaro.org/applications/manjaro-settings-manager"
@@ -20,7 +20,7 @@ makedepends=('extra-cmake-modules' 'kdoctools' 'qt5-tools' 'knotifications'
 conflicts=('kcm-msm')
 source=(#"msm-$pkgver-$pkgrel.tar.gz::$url/-/archive/$pkgver/$pkgbase-$pkgver.tar.gz")
         "msm-$pkgver-$pkgrel-$_commit.tar.gz::$url/-/archive/$_commit/$pkgbase-$_commit.tar.gz")
-sha256sums=('39d11dfc31d7a5f34bab66094b7032d327d2045c37385f86e50ad184da3e6665')
+sha256sums=('8e9a914890167acdfaac4c560849afd0ae8670165a954da4447cf88c1b99a1b8')
 
 prepare() {
   mv ${pkgbase}-${_commit} ${pkgbase}-${pkgver}
@@ -47,7 +47,6 @@ package_manjaro-settings-manager() {
   rm -rf $pkgdir/usr/bin/msm_notifier
   rm -rf $pkgdir/usr/bin/msm_kde_notifier
   rm -rf $pkgdir/usr/lib/qt
-  rm -rf $pkgdir/usr/share/systemsettings/categories/
   rm -rf $pkgdir/usr/share/kservices5
   rm -rf $pkgdir/usr/share/applications/msm_notifier_settings.desktop
   rm -rf $pkgdir/usr/share/applications/msm_kde_notifier_settings.desktop
@@ -76,7 +75,6 @@ package_manjaro-settings-manager-notifier() {
   rm -rf $pkgdir/etc/dbus-1
   rm -rf $pkgdir/etc/xdg/autostart/msm_kde_notifier.desktop
   rm -rf $pkgdir/usr/lib/
-  rm -rf $pkgdir/usr/share/systemsettings/categories/
   rm -rf $pkgdir/usr/share/{kservices5,dbus-1,icons,polkit-1}
   rm -rf $pkgdir/usr/share/applications/manjaro*
   rm -rf $pkgdir/usr/share/applications/msm_kde_notifier_settings.desktop
@@ -94,7 +92,6 @@ package_manjaro-settings-manager-knotifier() {
   rm -rf $pkgdir/etc/dbus-1
   rm -rf $pkgdir/etc/xdg/autostart/msm_notifier.desktop
   rm -rf $pkgdir/usr/lib/
-  rm -rf $pkgdir/usr/share/systemsettings/categories/
   rm -rf $pkgdir/usr/share/{kservices5,dbus-1,icons,polkit-1}
   rm -rf $pkgdir/usr/share/applications/manjaro*
   rm -rf $pkgdir/usr/share/applications/msm_notifier_settings.desktop
