@@ -1,13 +1,12 @@
 # Maintainer: Philip Müller <philm[at]manjaro[dot]org>
 # Maintainer: Bernhard Landauer <bernhard[at]manjaro[dot]org>
-# Maintainer: Helmut Stult <helmut[at]manjaro[dot]org>
 
 pkgbase=manjaro-settings-manager
 pkgname=('manjaro-settings-manager' 'manjaro-settings-manager-kcm' 
          'manjaro-settings-manager-notifier' 'manjaro-settings-manager-knotifier')
 pkgver=0.5.6
-_commit=fd1a230640d200af024948e42db4fcb897851a83
-pkgrel=14
+_commit=d7ce0fae
+pkgrel=16
 pkgdesc="Manjaro Linux System Settings Tool"
 arch=('x86_64')
 url="https://gitlab.manjaro.org/applications/manjaro-settings-manager"
@@ -21,7 +20,7 @@ makedepends=('extra-cmake-modules' 'kdoctools' 'qt5-tools' 'knotifications'
 conflicts=('kcm-msm')
 source=(#"msm-$pkgver-$pkgrel.tar.gz::$url/-/archive/$pkgver/$pkgbase-$pkgver.tar.gz")
         "msm-$pkgver-$pkgrel-$_commit.tar.gz::$url/-/archive/$_commit/$pkgbase-$_commit.tar.gz")
-sha256sums=('bd705a9961acd41d4fbdd2b41787b0927d9f4f90ff265d1e8f31d8c94ba70f5c')
+sha256sums=('39d11dfc31d7a5f34bab66094b7032d327d2045c37385f86e50ad184da3e6665')
 
 prepare() {
   mv ${pkgbase}-${_commit} ${pkgbase}-${pkgver}
@@ -39,7 +38,7 @@ build() {
     -DLIB_INSTALL_DIR=lib \
     -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
     -DSYSCONF_INSTALL_DIR=/etc
-  CXXFLAGS+="-std=gnu++98" make
+  CXXFLAGS+="-std=gnu++11" make
 }
 
 package_manjaro-settings-manager() {
@@ -48,6 +47,7 @@ package_manjaro-settings-manager() {
   rm -rf $pkgdir/usr/bin/msm_notifier
   rm -rf $pkgdir/usr/bin/msm_kde_notifier
   rm -rf $pkgdir/usr/lib/qt
+  rm -rf $pkgdir/usr/share/systemsettings/categories/
   rm -rf $pkgdir/usr/share/kservices5
   rm -rf $pkgdir/usr/share/applications/msm_notifier_settings.desktop
   rm -rf $pkgdir/usr/share/applications/msm_kde_notifier_settings.desktop
