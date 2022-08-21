@@ -6,7 +6,7 @@ pkgname=('manjaro-settings-manager' 'manjaro-settings-manager-kcm'
          'manjaro-settings-manager-notifier' 'manjaro-settings-manager-knotifier')
 pkgver=0.5.7
 _commit=cdf9c77eb1a7701bec7dce431f85b0976964a98f
-pkgrel=6
+pkgrel=6.1
 pkgdesc="Manjaro Linux System Settings Tool"
 arch=('x86_64')
 url="https://gitlab.manjaro.org/applications/manjaro-settings-manager"
@@ -18,8 +18,10 @@ optdepends=('manjaro-settings-manager-notifier: qt-based'
 makedepends=('extra-cmake-modules' 'kdoctools' 'qt5-tools' 'knotifications' 
              'kconfigwidgets' 'kcmutils')
 conflicts=('kcm-msm')
-source=(#"msm-$pkgver-$pkgrel.tar.gz::$url/-/archive/$pkgver/$pkgbase-$pkgver.tar.gz")
-        "msm-$pkgver-$pkgrel-$_commit.tar.gz::$url/-/archive/$_commit/$pkgbase-$_commit.tar.gz")
+source=(
+#        "$url/-/archive/$pkgver/$pkgbase-$pkgver.tar.gz"
+        "$url/-/archive/$_commit/$pkgbase-$_commit.tar.gz"
+        )
 sha256sums=('7364cb5be516b4a53e9f7ed039a863bf4620d2f2bd87150875e4e9f138195e22')
 
 prepare() {
@@ -33,9 +35,9 @@ build() {
   cmake -B build -S "${pkgbase}-${pkgver}" \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DLIB_INSTALL_DIR=lib \
+    -DKDE_INSTALL_LIBDIR=lib \
     -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
-    -DSYSCONF_INSTALL_DIR=/etc
+    -DKDE_INSTALL_SYSCONFDIR=/etc
   CXXFLAGS+="-std=gnu++11" make -C build
 }
 
