@@ -1,0 +1,34 @@
+From 12706519b78ed81e99b2dbf09042e70a5438cf00 Mon Sep 17 00:00:00 2001
+From: Tingfeng <wu.tingfeng@u.nus.edu>
+Date: Sun, 21 Aug 2022 23:23:30 +0800
+Subject: [PATCH] fix russian translation for 'rate' - closes #168
+
+---
+ src/libmsm/translations/msm_ru.ts | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/libmsm/translations/msm_ru.ts b/src/libmsm/translations/msm_ru.ts
+index 9961015..d528817 100644
+--- a/src/libmsm/translations/msm_ru.ts
++++ b/src/libmsm/translations/msm_ru.ts
+@@ -840,17 +840,17 @@ It is recommended to enable those groups. Do you really want to continue?</sourc
+     <message>
+         <location filename="../../modules/keyboard/ui/PageKeyboard.ui" line="183"/>
+         <source>Rate:</source>
+-        <translation>Тариф:</translation>
++        <translation>Частота:</translation>
+     </message>
+     <message>
+         <location filename="../../modules/keyboard/ui/PageKeyboard.ui" line="201"/>
+         <source>Rate  </source>
+-        <translation>Тариф</translation>
++        <translation>Частота</translation>
+     </message>
+     <message>
+         <location filename="../../modules/keyboard/ui/PageKeyboard.ui" line="208"/>
+         <source>Set Rate</source>
+-        <translation>Установка тарифа</translation>
++        <translation>Установка частота</translation>
+     </message>
+ </context>
+ <context>

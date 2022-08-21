@@ -6,7 +6,7 @@ pkgname=('manjaro-settings-manager' 'manjaro-settings-manager-kcm'
          'manjaro-settings-manager-notifier' 'manjaro-settings-manager-knotifier')
 pkgver=0.5.7
 _commit=cdf9c77eb1a7701bec7dce431f85b0976964a98f
-pkgrel=6
+pkgrel=7
 pkgdesc="Manjaro Linux System Settings Tool"
 arch=('x86_64')
 url="https://gitlab.manjaro.org/applications/manjaro-settings-manager"
@@ -22,14 +22,32 @@ conflicts=('kcm-msm')
 source=(
 #        "$url/-/archive/$pkgver/$pkgbase-$pkgver.tar.gz"
         "$url/-/archive/$_commit/$pkgbase-$_commit.tar.gz"
+#        'hideRemoveButton.patch'
+        'installPackagesCN.patch'
+        'installRemoveKernelCN.patch'
+        'rateRUTranslation.patch'
         )
-sha256sums=('7364cb5be516b4a53e9f7ed039a863bf4620d2f2bd87150875e4e9f138195e22')
+sha256sums=('7364cb5be516b4a53e9f7ed039a863bf4620d2f2bd87150875e4e9f138195e22'
+            '2200c3617148e916a77e669fcd4916795f4486448d0750b86e10fe235651b3e3'
+            '8ceac84432cdaef87ebab4eded03e9d90c190e173efa7de76d60e61880082326'
+            'e3dae932a552f5cab3cc376e0bd1926a47483d4282b58f87894f57441d865365')
 
 prepare() {
   mv ${pkgbase}-${_commit} ${pkgbase}-${pkgver}
 
   cd "$srcdir/${pkgbase}-${pkgver}"
-  # patches here
+
+  # https://gitlab.manjaro.org/applications/manjaro-settings-manager/-/issues/204
+#  patch -Np1 -i ../hideRemoveButton.patch
+
+  # https://gitlab.manjaro.org/applications/manjaro-settings-manager/-/issues/212
+  patch -Np1 -i ../installPackagesCN.patch
+
+  # https://gitlab.manjaro.org/applications/manjaro-settings-manager/-/issues/167
+  patch -Np1 -i ../installRemoveKernelCN.patch
+
+  # https://gitlab.manjaro.org/applications/manjaro-settings-manager/-/issues/168
+  patch -Np1 -i ../rateRUTranslation.patch
 }
 
 build() {

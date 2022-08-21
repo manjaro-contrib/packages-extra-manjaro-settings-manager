@@ -1,0 +1,67 @@
+From b95ddf99e3c9aa64761bd24dc560673cf2a9d1b7 Mon Sep 17 00:00:00 2001
+From: Tingfeng <wu.tingfeng@u.nus.edu>
+Date: Sun, 21 Aug 2022 07:08:32 +0800
+Subject: [PATCH] hide install/remove button for current running kernel
+
+---
+ src/modules/kernel/KernelListViewDelegate.cpp | 26 +++++++++++--------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
+
+diff --git a/src/modules/kernel/KernelListViewDelegate.cpp b/src/modules/kernel/KernelListViewDelegate.cpp
+index 2c1ba54..4c81f02 100644
+--- a/src/modules/kernel/KernelListViewDelegate.cpp
++++ b/src/modules/kernel/KernelListViewDelegate.cpp
+@@ -96,15 +96,17 @@ KernelListViewDelegate::paint( QPainter* painter, const QStyleOptionViewItem& op
+     buttonRect.moveTopRight( QPointF( option.rect.right() - padding,
+                                       option.rect.center().y() - buttonHeight - 10 ) );
+ 
+-    QStyleOptionButton button;
+-    button.rect = buttonRect.toRect();
+-    if ( isInstalled )
+-        button.text = removeStr;
+-    else
+-        button.text = installStr;
+-    button.state = m_stateInstallButton | QStyle::State_Enabled;
+-    painter->setFont( buttonFont );
+-    QApplication::style()->drawControl( QStyle::CE_PushButton, &button, painter );
++    if ( !isRunning )
++        QStyleOptionButton button;
++        button.rect = buttonRect.toRect();
++        if ( isInstalled )
++            button.text = removeStr;
++        else
++            button.text = installStr;
++        button.state = m_stateInstallButton | QStyle::State_Enabled;
++        painter->setFont( buttonFont );
++        QApplication::style()->drawControl( QStyle::CE_PushButton, &button, painter );
++    }
+ 
+     // Draw changelog/information button
+     buttonRect.moveTopRight( QPointF( option.rect.right() - padding,
+@@ -298,6 +300,8 @@ KernelListViewDelegate::editorEvent( QEvent* event, QAbstractItemModel* model,
+     infoButtonRect.moveTopRight( QPointF( option.rect.right() - padding,
+                                           option.rect.center().y() + 2 ) );
+ 
++    bool isRunning = qvariant_cast<bool>( index.data( KernelModel::IsRunningRole ) );
++
+     // Raise or sunk buttons, and emit signals
+     QMouseEvent* mouseEvent = static_cast<QMouseEvent*>( event );
+     if ( !installButtonRect.contains( mouseEvent->pos() ) &&
+@@ -309,7 +313,7 @@ KernelListViewDelegate::editorEvent( QEvent* event, QAbstractItemModel* model,
+     }
+     if ( event->type() == QEvent::MouseButtonPress )
+     {
+-        if ( installButtonRect.contains( mouseEvent->pos() ) )
++        if ( !isRunning && installButtonRect.contains( mouseEvent->pos() ) )
+             m_stateInstallButton = QStyle::State_Sunken;
+         if ( infoButtonRect.contains( mouseEvent->pos() ) )
+             m_stateInfoButton = QStyle::State_Sunken;
+@@ -318,7 +322,7 @@ KernelListViewDelegate::editorEvent( QEvent* event, QAbstractItemModel* model,
+     {
+         m_stateInstallButton = QStyle::State_Raised;
+         m_stateInfoButton = QStyle::State_Raised;
+-        if ( installButtonRect.contains( mouseEvent->pos() ) )
++        if ( !isRunning && installButtonRect.contains( mouseEvent->pos() ) )
+             emit installButtonClicked( index );
+         if ( infoButtonRect.contains( mouseEvent->pos() ) )
+         {

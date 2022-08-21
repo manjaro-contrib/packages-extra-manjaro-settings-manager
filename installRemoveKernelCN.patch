@@ -1,0 +1,35 @@
+From ef614791e024b5850522a4917ad5e5b9a4537e6f Mon Sep 17 00:00:00 2001
+From: Tingfeng <wu.tingfeng@u.nus.edu>
+Date: Sun, 21 Aug 2022 23:45:17 +0800
+Subject: [PATCH] fix chinese translation for 'add and remove manjaro kernels'
+ - resolves #167
+
+---
+ src/libmsm/translations/msm_zh_CN.ts  | 2 +-
+ src/modules/kernel/msm_kernel.desktop | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/libmsm/translations/msm_zh_CN.ts b/src/libmsm/translations/msm_zh_CN.ts
+index bcf5e6e..6f8b70b 100644
+--- a/src/libmsm/translations/msm_zh_CN.ts
++++ b/src/libmsm/translations/msm_zh_CN.ts
+@@ -195,7 +195,7 @@ It is recommended to enable those groups. Do you really want to continue?</sourc
+     <message>
+         <location filename="../../modules/kernel/KernelCommon.cpp" line="46"/>
+         <source>Add and remove manjaro kernels</source>
+-        <translation>安装或已出 Manjaro 内</translation>
++        <translation>安装或删除 manjaro 内核</translation>
+     </message>
+     <message>
+         <location filename="../../modules/kernel/KernelCommon.cpp" line="77"/>
+diff --git a/src/modules/kernel/msm_kernel.desktop b/src/modules/kernel/msm_kernel.desktop
+index 0c61fb5..305b78f 100644
+--- a/src/modules/kernel/msm_kernel.desktop
++++ b/src/modules/kernel/msm_kernel.desktop
+@@ -79,5 +79,5 @@ Comment[sq]=Shto dhe hiq kernelin manjaro
+ Comment[sv]=Lägg till och ta bort Manjarokärnor
+ Comment[tr]=Manjaro için linux çekirdeği ekle ve kaldır
+ Comment[uk]=Додавання і видалення ядра manjaro
+-Comment[zh_CN]=安装或已出 Manjaro 内
++Comment[zh_CN]=安装或删除 manjaro 内核
+ Comment[zh_TW]=新增與移除 manjaro 核心
