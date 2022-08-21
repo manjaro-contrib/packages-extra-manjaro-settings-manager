@@ -6,7 +6,7 @@ pkgname=('manjaro-settings-manager' 'manjaro-settings-manager-kcm'
          'manjaro-settings-manager-notifier' 'manjaro-settings-manager-knotifier')
 pkgver=0.5.7
 _commit=cdf9c77eb1a7701bec7dce431f85b0976964a98f
-pkgrel=7
+pkgrel=8
 pkgdesc="Manjaro Linux System Settings Tool"
 arch=('x86_64')
 url="https://gitlab.manjaro.org/applications/manjaro-settings-manager"
@@ -16,9 +16,6 @@ depends=('icu<71.2' 'qt5-base<5.15.6' 'hwinfo' 'kitemmodels' 'kauth'
 makedepends=('extra-cmake-modules' 'kdoctools' 'qt5-tools' 'knotifications' 
              'kconfigwidgets' 'kcmutils')
 checkdepends=('appstream')
-optdepends=('manjaro-settings-manager-notifier: qt-based'
-            'manjaro-settings-manager-knotifier: knotifications-based')
-conflicts=('kcm-msm')
 source=(
 #        "$url/-/archive/$pkgver/$pkgbase-$pkgver.tar.gz"
         "$url/-/archive/$_commit/$pkgbase-$_commit.tar.gz"
@@ -65,6 +62,10 @@ check() {
 }
 
 package_manjaro-settings-manager() {
+  optdepends=('manjaro-settings-manager-notifier: qt-based'
+              'manjaro-settings-manager-knotifier: knotifications-based')
+  conflicts=('kcm-msm')
+
   DESTDIR="$pkgdir" cmake --install build/
 
   rm -rf $pkgdir/usr/bin/msm_notifier
