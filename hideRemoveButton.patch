@@ -3,65 +3,52 @@ From: Tingfeng <wu.tingfeng@u.nus.edu>
 Date: Sun, 21 Aug 2022 07:08:32 +0800
 Subject: [PATCH] hide install/remove button for current running kernel
 
+The following changes since commit cdf9c77eb1a7701bec7dce431f85b0976964a98f:
+
+  [release] v0.5.7 (2022-02-01 22:19:00 +0100)
+
+are available in the Git repository at:
+
+  https://github.com/elliotwutingfeng/manjaro-settings-manager.git hideRemoveButton
+
+for you to fetch changes up to 575f53f07c237afd078d2852eb84426c765ada14:
+
+  remove redundant checks (2022-08-21 21:54:18 +0800)
+
+----------------------------------------------------------------
+Tingfeng (3):
+      hide install/remove button for current running kernel
+      fix missing opening brace
+      remove redundant checks
+
 ---
- src/modules/kernel/KernelListViewDelegate.cpp | 26 +++++++++++--------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+ src/modules/kernel/KernelListViewDelegate.cpp | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/src/modules/kernel/KernelListViewDelegate.cpp b/src/modules/kernel/KernelListViewDelegate.cpp
-index 2c1ba54..4c81f02 100644
+index 2c1ba54..b6f3f21 100644
 --- a/src/modules/kernel/KernelListViewDelegate.cpp
 +++ b/src/modules/kernel/KernelListViewDelegate.cpp
-@@ -96,15 +96,17 @@ KernelListViewDelegate::paint( QPainter* painter, const QStyleOptionViewItem& op
-     buttonRect.moveTopRight( QPointF( option.rect.right() - padding,
-                                       option.rect.center().y() - buttonHeight - 10 ) );
- 
--    QStyleOptionButton button;
--    button.rect = buttonRect.toRect();
--    if ( isInstalled )
--        button.text = removeStr;
--    else
--        button.text = installStr;
--    button.state = m_stateInstallButton | QStyle::State_Enabled;
--    painter->setFont( buttonFont );
+@@ -104,7 +104,8 @@ KernelListViewDelegate::paint( QPainter* painter, const QStyleOptionViewItem& op
+         button.text = installStr;
+     button.state = m_stateInstallButton | QStyle::State_Enabled;
+     painter->setFont( buttonFont );
 -    QApplication::style()->drawControl( QStyle::CE_PushButton, &button, painter );
 +    if ( !isRunning )
-+        QStyleOptionButton button;
-+        button.rect = buttonRect.toRect();
-+        if ( isInstalled )
-+            button.text = removeStr;
-+        else
-+            button.text = installStr;
-+        button.state = m_stateInstallButton | QStyle::State_Enabled;
-+        painter->setFont( buttonFont );
 +        QApplication::style()->drawControl( QStyle::CE_PushButton, &button, painter );
-+    }
  
      // Draw changelog/information button
      buttonRect.moveTopRight( QPointF( option.rect.right() - padding,
-@@ -298,6 +300,8 @@ KernelListViewDelegate::editorEvent( QEvent* event, QAbstractItemModel* model,
-     infoButtonRect.moveTopRight( QPointF( option.rect.right() - padding,
-                                           option.rect.center().y() + 2 ) );
- 
-+    bool isRunning = qvariant_cast<bool>( index.data( KernelModel::IsRunningRole ) );
-+
-     // Raise or sunk buttons, and emit signals
-     QMouseEvent* mouseEvent = static_cast<QMouseEvent*>( event );
-     if ( !installButtonRect.contains( mouseEvent->pos() ) &&
-@@ -309,7 +313,7 @@ KernelListViewDelegate::editorEvent( QEvent* event, QAbstractItemModel* model,
-     }
-     if ( event->type() == QEvent::MouseButtonPress )
-     {
--        if ( installButtonRect.contains( mouseEvent->pos() ) )
-+        if ( !isRunning && installButtonRect.contains( mouseEvent->pos() ) )
-             m_stateInstallButton = QStyle::State_Sunken;
-         if ( infoButtonRect.contains( mouseEvent->pos() ) )
-             m_stateInfoButton = QStyle::State_Sunken;
-@@ -318,7 +322,7 @@ KernelListViewDelegate::editorEvent( QEvent* event, QAbstractItemModel* model,
-     {
+@@ -319,7 +320,10 @@ KernelListViewDelegate::editorEvent( QEvent* event, QAbstractItemModel* model,
          m_stateInstallButton = QStyle::State_Raised;
          m_stateInfoButton = QStyle::State_Raised;
--        if ( installButtonRect.contains( mouseEvent->pos() ) )
-+        if ( !isRunning && installButtonRect.contains( mouseEvent->pos() ) )
-             emit installButtonClicked( index );
+         if ( installButtonRect.contains( mouseEvent->pos() ) )
+-            emit installButtonClicked( index );
++        {
++            if ( !qvariant_cast<bool>( index.data( KernelModel::IsRunningRole ) ) )
++                emit installButtonClicked( index );
++        }
          if ( infoButtonRect.contains( mouseEvent->pos() ) )
          {
+             if ( QFile( changelog ).exists() )
+
