@@ -39,7 +39,7 @@ build() {
     -DKDE_INSTALL_LIBDIR=lib \
     -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
     -DKDE_INSTALL_SYSCONFDIR=/etc
-  CXXFLAGS+="-std=gnu++11" make -C build
+  CXXFLAGS+="-std=gnu++11" cmake --build build
 }
 
 check() {
@@ -47,7 +47,7 @@ check() {
 }
 
 package_manjaro-settings-manager() {
-  make -C build DESTDIR=${pkgdir} install
+  DESTDIR="$pkgdir" cmake --install build/
 
   rm -rf $pkgdir/usr/bin/msm_notifier
   rm -rf $pkgdir/usr/bin/msm_kde_notifier
@@ -64,9 +64,9 @@ package_manjaro-settings-manager-kcm() {
   depends=('manjaro-settings-manager' 'kcmutils' 'kconfigwidgets')
   replaces=('kcm-msm')
 
-  make -C build DESTDIR=${pkgdir} install
+  DESTDIR="$pkgdir" cmake --install build
 
-  rm -rf $pkgdir/etc  
+  rm -rf $pkgdir/etc
   rm -rf $pkgdir/usr/bin
   rm -rf $pkgdir/usr/lib/kauth
   rm -rf $pkgdir/usr/share/{applications,dbus-1,icons,polkit-1}
@@ -78,17 +78,7 @@ package_manjaro-settings-manager-notifier() {
   provides=('manjaro-settings-manager-kde-notifier')
   conflicts=('manjaro-settings-manager-kde-notifier')
 
-  make -C build DESTDIR=${pkgdir} install
-
-  rm -rf $pkgdir/etc/dbus-1
-  rm -rf $pkgdir/etc/xdg/autostart/msm_kde_notifier.desktop
-  rm -rf $pkgdir/usr/lib/
-  rm -rf $pkgdir/usr/share/systemsettings/categories/
-  rm -rf $pkgdir/usr/share/{kservices5,dbus-1,icons,polkit-1}
-  rm -rf $pkgdir/usr/share/applications/manjaro*
-  rm -rf $pkgdir/usr/share/applications/msm_kde_notifier_settings.desktop
-  rm -rf $pkgdir/usr/bin/manjaro*
-  rm -rf $pkgdir/usr/bin/msm_kde_notifier
+  DESTDIR="$pkgdir" cmake --install build/src/notifier/notifier
 }
 
 package_manjaro-settings-manager-knotifier() {
@@ -97,15 +87,5 @@ package_manjaro-settings-manager-knotifier() {
   conflicts=('manjaro-settings-manager-notifier')
   replaces=('manjaro-settings-manager-kde-notifier')
 
-  make -C build DESTDIR=${pkgdir} install
-
-  rm -rf $pkgdir/etc/dbus-1
-  rm -rf $pkgdir/etc/xdg/autostart/msm_notifier.desktop
-  rm -rf $pkgdir/usr/lib/
-  rm -rf $pkgdir/usr/share/systemsettings/categories/
-  rm -rf $pkgdir/usr/share/{kservices5,dbus-1,icons,polkit-1}
-  rm -rf $pkgdir/usr/share/applications/manjaro*
-  rm -rf $pkgdir/usr/share/applications/msm_notifier_settings.desktop
-  rm -rf $pkgdir/usr/bin/manjaro*
-  rm -rf $pkgdir/usr/bin/msm_notifier
+  DESTDIR="$pkgdir" cmake --install build/src/notifier/notifier_kde
 }
