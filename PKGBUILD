@@ -13,10 +13,11 @@ url="https://gitlab.manjaro.org/applications/manjaro-settings-manager"
 license=("GPL")
 depends=('icu<71.2' 'qt5-base<5.15.6' 'hwinfo' 'kitemmodels' 'kauth'
          'kcoreaddons' 'ckbcomp' 'xdg-utils')
-optdepends=('manjaro-settings-manager-notifier: qt-based'
-            'manjaro-settings-manager-knotifier: knotifications-based')
 makedepends=('extra-cmake-modules' 'kdoctools' 'qt5-tools' 'knotifications' 
              'kconfigwidgets' 'kcmutils')
+checkdepends=('appstream')
+optdepends=('manjaro-settings-manager-notifier: qt-based'
+            'manjaro-settings-manager-knotifier: knotifications-based')
 conflicts=('kcm-msm')
 source=(
 #        "$url/-/archive/$pkgver/$pkgbase-$pkgver.tar.gz"
@@ -39,6 +40,10 @@ build() {
     -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
     -DKDE_INSTALL_SYSCONFDIR=/etc
   CXXFLAGS+="-std=gnu++11" make -C build
+}
+
+check() {
+  ctest --test-dir build --output-on-failure
 }
 
 package_manjaro-settings-manager() {
