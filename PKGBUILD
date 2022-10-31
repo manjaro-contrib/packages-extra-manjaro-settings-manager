@@ -6,12 +6,12 @@ pkgname=('manjaro-settings-manager' 'manjaro-settings-manager-kcm'
          'manjaro-settings-manager-notifier' 'manjaro-settings-manager-knotifier')
 pkgver=0.5.7
 _commit=cdf9c77eb1a7701bec7dce431f85b0976964a98f
-pkgrel=11
+pkgrel=12
 pkgdesc="Manjaro Linux System Settings Tool"
 arch=('x86_64')
 url="https://gitlab.manjaro.org/applications/manjaro-settings-manager"
 license=("GPL")
-depends=('icu<72.2' 'qt5-base<5.15.7' 'hwinfo' 'kitemmodels' 'kauth'
+depends=('icu<72.2' 'qt5-base<5.15.8' 'hwinfo' 'kitemmodels' 'kauth'
          'kcoreaddons' 'ckbcomp' 'xdg-utils')
 makedepends=('extra-cmake-modules' 'kdoctools' 'qt5-tools' 'knotifications' 
              'kconfigwidgets' 'kcmutils')
