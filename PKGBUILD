@@ -5,8 +5,8 @@ pkgbase=manjaro-settings-manager
 pkgname=('manjaro-settings-manager' 'manjaro-settings-manager-kcm' 
          'manjaro-settings-manager-notifier' 'manjaro-settings-manager-knotifier')
 pkgver=0.5.7
-_commit=cdf9c77eb1a7701bec7dce431f85b0976964a98f
-pkgrel=13
+_commit=19536fe1444d88579616edffca5e1ebc2ab67ae7
+pkgrel=14
 pkgdesc="Manjaro Linux System Settings Tool"
 arch=('x86_64')
 url="https://gitlab.manjaro.org/applications/manjaro-settings-manager"
@@ -24,7 +24,7 @@ source=(
         'installRemoveKernelCN.patch'
         'rateRUTranslation.patch'
         )
-sha256sums=('7364cb5be516b4a53e9f7ed039a863bf4620d2f2bd87150875e4e9f138195e22'
+sha256sums=('ebc5cd6a52ab2d8c8c0e57f7d28a2653c3874e7584f9623c184f384119dc4242'
             '4ac7c0120dcc4272cc8ba9e3bfd7a7c329b8fae8bfd71ee89f961b1529f14d44'
             '2200c3617148e916a77e669fcd4916795f4486448d0750b86e10fe235651b3e3'
             '8ceac84432cdaef87ebab4eded03e9d90c190e173efa7de76d60e61880082326'
