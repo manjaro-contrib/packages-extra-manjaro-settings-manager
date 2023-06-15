@@ -2,7 +2,7 @@
 # Maintainer: Bernhard Landauer <bernhard[at]manjaro[dot]org>
 
 pkgbase=manjaro-settings-manager
-pkgname=('manjaro-settings-manager' 'manjaro-settings-manager-kcm' 
+pkgname=('manjaro-settings-manager' 'manjaro-settings-manager-kcm'
          'manjaro-settings-manager-notifier' 'manjaro-settings-manager-knotifier')
 pkgver=0.5.7
 _commit=19536fe1444d88579616edffca5e1ebc2ab67ae7
@@ -13,27 +13,25 @@ url="https://gitlab.manjaro.org/applications/manjaro-settings-manager"
 license=("GPL")
 depends=('icu<72.2' 'qt5-base' 'hwinfo' 'kitemmodels' 'kauth'
          'kcoreaddons' 'ckbcomp' 'xdg-utils')
-makedepends=('extra-cmake-modules' 'kdoctools' 'qt5-tools' 'knotifications' 
+makedepends=('git' 'extra-cmake-modules' 'kdoctools' 'qt5-tools' 'knotifications'
              'kconfigwidgets' 'kcmutils')
 checkdepends=('appstream')
 source=(
 #        "$url/-/archive/$pkgver/$pkgbase-$pkgver.tar.gz"
-        "$url/-/archive/$_commit/$pkgbase-$_commit.tar.gz"
+        "git+$url.git#commit=${_commit}"
         'hideRemoveButton.patch'
         'installPackagesCN.patch'
         'installRemoveKernelCN.patch'
         'rateRUTranslation.patch'
         )
-sha256sums=('ebc5cd6a52ab2d8c8c0e57f7d28a2653c3874e7584f9623c184f384119dc4242'
+sha256sums=('SKIP'
             '4ac7c0120dcc4272cc8ba9e3bfd7a7c329b8fae8bfd71ee89f961b1529f14d44'
             '2200c3617148e916a77e669fcd4916795f4486448d0750b86e10fe235651b3e3'
             '8ceac84432cdaef87ebab4eded03e9d90c190e173efa7de76d60e61880082326'
             'e3dae932a552f5cab3cc376e0bd1926a47483d4282b58f87894f57441d865365')
 
 prepare() {
-  mv ${pkgbase}-${_commit} ${pkgbase}-${pkgver}
-
-  cd "$srcdir/${pkgbase}-${pkgver}"
+  cd "$srcdir/${pkgbase}"
 
   # https://gitlab.manjaro.org/applications/manjaro-settings-manager/-/issues/204
   patch -Np1 -i ../hideRemoveButton.patch
@@ -49,7 +47,7 @@ prepare() {
 }
 
 build() {
-  cmake -B build -S "${pkgbase}-${pkgver}" \
+  cmake -B build -S "${pkgbase}" \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DKDE_INSTALL_LIBDIR=lib \
