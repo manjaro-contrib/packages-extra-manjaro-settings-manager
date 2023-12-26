@@ -5,8 +5,8 @@ pkgbase=manjaro-settings-manager
 pkgname=('manjaro-settings-manager' 'manjaro-settings-manager-kcm'
          'manjaro-settings-manager-notifier' 'manjaro-settings-manager-knotifier')
 pkgver=0.5.7
-_commit=cf9b7ad6d59d326bafe6cb4cc2264abdd7121c6d
-pkgrel=19
+_commit=c9a16eabbbae0f69cf956c5a1f2402574a26f195
+pkgrel=20
 pkgdesc="Manjaro Linux System Settings Tool"
 arch=('x86_64')
 url="https://gitlab.manjaro.org/applications/manjaro-settings-manager"
