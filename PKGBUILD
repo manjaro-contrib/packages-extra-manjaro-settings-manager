@@ -2,19 +2,38 @@
 # Maintainer: Bernhard Landauer <bernhard[at]manjaro[dot]org>
 
 pkgbase=manjaro-settings-manager
-pkgname=('manjaro-settings-manager' 'manjaro-settings-manager-kcm'
-         'manjaro-settings-manager-notifier' 'manjaro-settings-manager-knotifier')
+pkgname=(
+  'manjaro-settings-manager'
+  'manjaro-settings-manager-kcm'
+  'manjaro-settings-manager-notifier'
+  'manjaro-settings-manager-knotifier'
+)
 pkgver=0.5.7
 _commit=c9a16eabbbae0f69cf956c5a1f2402574a26f195
 pkgrel=20
 pkgdesc="Manjaro Linux System Settings Tool"
 arch=('x86_64')
 url="https://gitlab.manjaro.org/applications/manjaro-settings-manager"
-license=("GPL")
-depends=('icu<75' 'qt5-base' 'hwinfo' 'kitemmodels5' 'kauth5'
-         'kcoreaddons5' 'ckbcomp' 'xdg-utils')
-makedepends=('git' 'extra-cmake-modules' 'kdoctools5' 'qt5-tools' 'knotifications5'
-             'kconfigwidgets5' 'kcmutils5')
+license=('GPL')
+depends=(
+  'ckbcomp'
+  'hwinfo'
+  'icu<75'
+  'kauth5'
+  'kcoreaddons5'
+  'kitemmodels5'
+  'qt5-base'
+  'xdg-utils'
+)
+makedepends=(
+  'extra-cmake-modules'
+  'git'
+  'kcmutils5'
+  'kconfigwidgets5'
+  'kdoctools5'
+  'knotifications5'
+  'qt5-tools'
+)
 checkdepends=('appstream')
 source=(
 #        "$url/-/archive/$pkgver/$pkgbase-$pkgver.tar.gz"
@@ -31,7 +50,7 @@ sha256sums=('SKIP'
             'e3dae932a552f5cab3cc376e0bd1926a47483d4282b58f87894f57441d865365')
 
 prepare() {
-  cd "$srcdir/${pkgbase}"
+  cd "$pkgbase"
 
   # https://gitlab.manjaro.org/applications/manjaro-settings-manager/-/issues/204
   patch -Np1 -i ../hideRemoveButton.patch
@@ -47,7 +66,7 @@ prepare() {
 }
 
 build() {
-  cmake -B build -S "${pkgbase}" \
+  cmake -B build -S "$pkgbase" \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DKDE_INSTALL_LIBDIR=lib \
@@ -67,27 +86,27 @@ package_manjaro-settings-manager() {
 
   DESTDIR="$pkgdir" cmake --install build/
 
-  rm -rf $pkgdir/usr/bin/msm_notifier
-  rm -rf $pkgdir/usr/bin/msm_kde_notifier
-  rm -rf $pkgdir/usr/lib/qt
-  rm -rf $pkgdir/usr/share/systemsettings/categories/
-  rm -rf $pkgdir/usr/share/kservices5
-  rm -rf $pkgdir/usr/share/applications/msm_notifier_settings.desktop
-  rm -rf $pkgdir/usr/share/applications/msm_kde_notifier_settings.desktop
-  rm -rf $pkgdir/etc/xdg
+  rm -rf "$pkgdir"/usr/bin/msm_notifier
+  rm -rf "$pkgdir"/usr/bin/msm_kde_notifier
+  rm -rf "$pkgdir"/usr/lib/qt
+  rm -rf "$pkgdir"/usr/share/systemsettings/categories/
+  rm -rf "$pkgdir"/usr/share/kservices5
+  rm -rf "$pkgdir"/usr/share/applications/msm_notifier_settings.desktop
+  rm -rf "$pkgdir"/usr/share/applications/msm_kde_notifier_settings.desktop
+  rm -rf "$pkgdir"/etc/xdg
 }
 
 package_manjaro-settings-manager-kcm() {
   pkgdesc+=" (KCM for Plasma 5)"
-  depends=('manjaro-settings-manager' 'kcmutils5' 'kconfigwidgets5')
+  depends=('kcmutils5' 'kconfigwidgets5' 'manjaro-settings-manager')
   replaces=('kcm-msm')
 
   DESTDIR="$pkgdir" cmake --install build
 
-  rm -rf $pkgdir/etc
-  rm -rf $pkgdir/usr/bin
-  rm -rf $pkgdir/usr/lib/kauth
-  rm -rf $pkgdir/usr/share/{applications,dbus-1,icons,polkit-1}
+  rm -rf "$pkgdir"/etc
+  rm -rf "$pkgdir"/usr/bin
+  rm -rf "$pkgdir"/usr/lib/kauth
+  rm -rf "$pkgdir"/usr/share/{applications,dbus-1,icons,polkit-1}
 }
 
 package_manjaro-settings-manager-notifier() {
@@ -101,7 +120,7 @@ package_manjaro-settings-manager-notifier() {
 
 package_manjaro-settings-manager-knotifier() {
   pkgdesc+=" (Notifier for Plasma 5)"
-  depends=('manjaro-settings-manager' 'knotifications5')
+  depends=('knotifications5' 'manjaro-settings-manager')
   conflicts=('manjaro-settings-manager-notifier')
   replaces=('manjaro-settings-manager-kde-notifier')
 
