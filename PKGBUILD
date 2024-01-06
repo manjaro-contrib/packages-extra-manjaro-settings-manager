@@ -10,7 +10,7 @@ pkgname=(
 )
 pkgver=0.5.7
 _commit=c9a16eabbbae0f69cf956c5a1f2402574a26f195
-pkgrel=20
+pkgrel=21
 pkgdesc="Manjaro Linux System Settings Tool"
 arch=('x86_64')
 url="https://gitlab.manjaro.org/applications/manjaro-settings-manager"
