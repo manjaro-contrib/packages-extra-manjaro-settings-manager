@@ -14,7 +14,7 @@ pkgrel=21
 pkgdesc="Manjaro Linux System Settings Tool"
 arch=('x86_64')
 url="https://gitlab.manjaro.org/applications/manjaro-settings-manager"
-license=('GPL')
+license=('GPL-3.0-or-later')
 depends=(
   'ckbcomp'
   'hwinfo'
