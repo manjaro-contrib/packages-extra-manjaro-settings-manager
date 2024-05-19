@@ -18,7 +18,7 @@ license=('GPL-3.0-or-later')
 depends=(
   'ckbcomp'
   'hwinfo'
-  'icu<75'
+  'icu'
   'kauth5'
   'kcoreaddons5'
   'kitemmodels5'
@@ -43,7 +43,7 @@ source=(
         'installRemoveKernelCN.patch'
         'rateRUTranslation.patch'
         )
-sha256sums=('SKIP'
+sha256sums=('62ac87ac89a89224088e87f42cc7dc5087cf3b9c2438f4cacacc8687ac14bfe4'
             '4ac7c0120dcc4272cc8ba9e3bfd7a7c329b8fae8bfd71ee89f961b1529f14d44'
             '2200c3617148e916a77e669fcd4916795f4486448d0750b86e10fe235651b3e3'
             '8ceac84432cdaef87ebab4eded03e9d90c190e173efa7de76d60e61880082326'
