@@ -69,10 +69,13 @@ build() {
   cmake -B build -S "$pkgbase" \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_CXX_STANDARD=17 \
+    -DCMAKE_CXX_STANDARD_REQUIRED=ON \
+    -DCMAKE_CXX_EXTENSIONS=OFF \
     -DKDE_INSTALL_LIBDIR=lib \
     -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
     -DKDE_INSTALL_SYSCONFDIR=/etc
-  CXXFLAGS+="-std=gnu++11" cmake --build build
+  cmake --build build
 }
 
 check() {
