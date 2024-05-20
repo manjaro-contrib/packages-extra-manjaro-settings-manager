@@ -38,31 +38,11 @@ checkdepends=('appstream')
 source=(
 #        "$url/-/archive/$pkgver/$pkgbase-$pkgver.tar.gz"
         "git+$url.git#commit=${_commit}"
-        'hideRemoveButton.patch'
-        'installPackagesCN.patch'
-        'installRemoveKernelCN.patch'
-        'rateRUTranslation.patch'
         )
-sha256sums=('62ac87ac89a89224088e87f42cc7dc5087cf3b9c2438f4cacacc8687ac14bfe4'
-            '4ac7c0120dcc4272cc8ba9e3bfd7a7c329b8fae8bfd71ee89f961b1529f14d44'
-            '2200c3617148e916a77e669fcd4916795f4486448d0750b86e10fe235651b3e3'
-            '8ceac84432cdaef87ebab4eded03e9d90c190e173efa7de76d60e61880082326'
-            'e3dae932a552f5cab3cc376e0bd1926a47483d4282b58f87894f57441d865365')
+sha256sums=('62ac87ac89a89224088e87f42cc7dc5087cf3b9c2438f4cacacc8687ac14bfe4')
 
 prepare() {
   cd "$pkgbase"
-
-  # https://gitlab.manjaro.org/applications/manjaro-settings-manager/-/issues/204
-  patch -Np1 -i ../hideRemoveButton.patch
-
-  # https://gitlab.manjaro.org/applications/manjaro-settings-manager/-/issues/212
-  patch -Np1 -i ../installPackagesCN.patch
-
-  # https://gitlab.manjaro.org/applications/manjaro-settings-manager/-/issues/167
-  patch -Np1 -i ../installRemoveKernelCN.patch
-
-  # https://gitlab.manjaro.org/applications/manjaro-settings-manager/-/issues/168
-  patch -Np1 -i ../rateRUTranslation.patch
 }
 
 build() {
