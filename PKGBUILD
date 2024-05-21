@@ -4,7 +4,7 @@
 pkgbase=manjaro-settings-manager
 pkgname=(
   'manjaro-settings-manager'
-  'manjaro-settings-manager-kcm'
+#  'manjaro-settings-manager-kcm'
   'manjaro-settings-manager-notifier'
   'manjaro-settings-manager-knotifier'
 )
@@ -79,18 +79,18 @@ package_manjaro-settings-manager() {
   rm -rf "$pkgdir"/etc/xdg
 }
 
-package_manjaro-settings-manager-kcm() {
-  pkgdesc+=" (KCM for Plasma 5)"
-  depends=('kcmutils5' 'kconfigwidgets5' 'manjaro-settings-manager')
-  replaces=('kcm-msm')
+#package_manjaro-settings-manager-kcm() {
+#  pkgdesc+=" (KCM for Plasma 5)"
+#  depends=('kcmutils5' 'kconfigwidgets5' 'manjaro-settings-manager')
+#  replaces=('kcm-msm')
 
-  DESTDIR="$pkgdir" cmake --install build
+#  DESTDIR="$pkgdir" cmake --install build
 
-  rm -rf "$pkgdir"/etc
-  rm -rf "$pkgdir"/usr/bin
-  rm -rf "$pkgdir"/usr/lib/kauth
-  rm -rf "$pkgdir"/usr/share/{applications,dbus-1,icons,polkit-1}
-}
+#  rm -rf "$pkgdir"/etc
+#  rm -rf "$pkgdir"/usr/bin
+#  rm -rf "$pkgdir"/usr/lib/kauth
+#  rm -rf "$pkgdir"/usr/share/{applications,dbus-1,icons,polkit-1}
+#}
 
 package_manjaro-settings-manager-notifier() {
   pkgdesc+=" (Notifier)"
