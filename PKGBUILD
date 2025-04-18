@@ -43,7 +43,7 @@ prepare() {
 
 build() {
   cmake -B build -S "$pkgbase" \
-    -DCMAKE_BUILD_TYPE='Release' \
+    -DCMAKE_BUILD_TYPE='RelWithDebInfo' \
     -DCMAKE_INSTALL_PREFIX='/usr' \
     -DCMAKE_CXX_STANDARD='17' \
     -DCMAKE_CXX_STANDARD_REQUIRED='ON' \
