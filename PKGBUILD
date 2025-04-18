@@ -9,7 +9,7 @@ pkgname=(
   'manjaro-settings-manager-knotifier'
 )
 pkgver=0.5.8
-pkgrel=3
+pkgrel=4
 pkgdesc="Manjaro Linux System Settings Tool"
 arch=('x86_64')
 url="https://gitlab.manjaro.org/applications/manjaro-settings-manager"
@@ -51,7 +51,7 @@ build() {
     -DKDE_INSTALL_LIBDIR='lib' \
     -DKDE_INSTALL_USE_QT_SYS_PATHS='ON' \
     -DKDE_INSTALL_SYSCONFDIR='/etc' \
-    -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+    -DCMAKE_POLICY_VERSION_MINIMUM='3.5'
   cmake --build build
 }
 
