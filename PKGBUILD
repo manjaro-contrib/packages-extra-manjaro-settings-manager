@@ -9,7 +9,7 @@ pkgname=(
   'manjaro-settings-manager-knotifier'
 )
 pkgver=0.5.8
-pkgrel=5
+pkgrel=6
 _commit=2e77950e4158071fbeb60171e1897821cc0d7bdf
 pkgdesc="Manjaro Linux System Settings Tool"
 arch=('x86_64')
@@ -17,7 +17,7 @@ url="https://gitlab.manjaro.org/applications/manjaro-settings-manager"
 license=('GPL-3.0-or-later')
 depends=(
   'ckbcomp'
-  'hwinfo'
+  'hwinfo<=26'
   'icu'
   'kauth5'
   'kcoreaddons5'
