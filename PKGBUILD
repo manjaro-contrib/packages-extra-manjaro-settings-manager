@@ -9,7 +9,7 @@ pkgname=(
   'manjaro-settings-manager-knotifier'
 )
 pkgver=0.5.8
-pkgrel=6
+pkgrel=7
 _commit=2e77950e4158071fbeb60171e1897821cc0d7bdf
 pkgdesc="Manjaro Linux System Settings Tool"
 arch=('x86_64')
