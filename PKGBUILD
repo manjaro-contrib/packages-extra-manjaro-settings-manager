@@ -9,7 +9,7 @@ pkgname=(
   'manjaro-settings-manager-knotifier'
 )
 pkgver=0.5.8
-pkgrel=8
+pkgrel=9
 _commit=95b71db3ab1e4ed74c3c320bebdc7d7fbf98c58e
 pkgdesc="Manjaro Linux System Settings Tool"
 arch=('x86_64')
@@ -17,6 +17,7 @@ url="https://gitlab.manjaro.org/applications/manjaro-settings-manager"
 license=('GPL-3.0-or-later')
 depends=(
   'ckbcomp'
+  'hicolor-icon-theme'
   'hwinfo<=26'
   'icu'
   'kauth5'
@@ -35,8 +36,8 @@ makedepends=(
   'qt5-tools'
 )
 checkdepends=('appstream')
-source=(#"git+https://gitlab.manjaro.org/applications/manjaro-settings-manager.git#tag=$pkgver"
-        "git+https://gitlab.manjaro.org/applications/manjaro-settings-manager.git#commit=$_commit")
+# source=("git+https://gitlab.manjaro.org/applications/manjaro-settings-manager.git#tag=$pkgver")
+source=("git+https://gitlab.manjaro.org/applications/manjaro-settings-manager.git#commit=${_commit}")
 sha256sums=('a1c5aee40456e2ba4dad89a1af5e7cc25e99b9e01bb16316d7c36e27812ed29a')
 
 prepare() {
@@ -44,26 +45,37 @@ prepare() {
 }
 
 build() {
-  cmake -B build -S "$pkgbase" \
-    -DCMAKE_BUILD_TYPE='RelWithDebInfo' \
-    -DCMAKE_INSTALL_PREFIX='/usr' \
-    -DCMAKE_CXX_STANDARD='17' \
-    -DCMAKE_CXX_STANDARD_REQUIRED='ON' \
-    -DCMAKE_CXX_EXTENSIONS='OFF' \
-    -DKDE_INSTALL_LIBDIR='lib' \
-    -DKDE_INSTALL_USE_QT_SYS_PATHS='ON' \
-    -DKDE_INSTALL_SYSCONFDIR='/etc' \
-    -DCMAKE_POLICY_VERSION_MINIMUM='3.5'
-  cmake --build build
+  local cmake_options=(
+    -B build
+    -S "$pkgbase"
+    -D CMAKE_BUILD_TYPE='RelWithDebInfo'
+    -D CMAKE_INSTALL_PREFIX='/usr'
+    -D CMAKE_CXX_STANDARD='17'
+    -D CMAKE_CXX_STANDARD_REQUIRED='ON'
+    -D CMAKE_CXX_EXTENSIONS='OFF'
+    -D KDE_INSTALL_LIBDIR='lib'
+    -D KDE_INSTALL_USE_QT_SYS_PATHS='ON'
+    -D KDE_INSTALL_SYSCONFDIR='/etc'
+    -D CMAKE_POLICY_VERSION_MINIMUM='3.5'
+  )
+    cmake "${cmake_options[@]}"
+    cmake --build build
 }
 
 check() {
-  ctest --test-dir build --output-on-failure
+  local ctest_flags=(
+    --test-dir build
+    --output-on-failure
+    --parallel $(nproc)
+  )
+  ctest "${ctest_flags[@]}"
 }
 
 package_manjaro-settings-manager() {
-  optdepends=('manjaro-settings-manager-notifier: qt-based'
-              'manjaro-settings-manager-knotifier: knotifications-based')
+  optdepends=(
+    'manjaro-settings-manager-notifier: qt-based'
+    'manjaro-settings-manager-knotifier: knotifications-based'
+  )
   conflicts=('kcm-msm')
 
   DESTDIR="$pkgdir" cmake --install build/
@@ -78,18 +90,22 @@ package_manjaro-settings-manager() {
   rm -rf "$pkgdir"/etc/xdg
 }
 
-#package_manjaro-settings-manager-kcm() {
-#  pkgdesc+=" (KCM for Plasma 5)"
-#  depends=('kcmutils5' 'kconfigwidgets5' 'manjaro-settings-manager')
-#  replaces=('kcm-msm')
+package_manjaro-settings-manager-kcm() {
+  pkgdesc+=" (KCM for Plasma 5)"
+  depends=(
+    'kcmutils5'
+    'kconfigwidgets5'
+    'manjaro-settings-manager'
+  )
+  replaces=('kcm-msm')
 
-#  DESTDIR="$pkgdir" cmake --install build
+  DESTDIR="$pkgdir" cmake --install build
 
-#  rm -rf "$pkgdir"/etc
-#  rm -rf "$pkgdir"/usr/bin
-#  rm -rf "$pkgdir"/usr/lib/kauth
-#  rm -rf "$pkgdir"/usr/share/{applications,dbus-1,icons,polkit-1}
-#}
+  rm -rf "$pkgdir"/etc
+  rm -rf "$pkgdir"/usr/bin
+  rm -rf "$pkgdir"/usr/lib/kauth
+  rm -rf "$pkgdir"/usr/share/{applications,dbus-1,icons,polkit-1}
+}
 
 package_manjaro-settings-manager-notifier() {
   pkgdesc+=" (Notifier)"
@@ -102,7 +118,10 @@ package_manjaro-settings-manager-notifier() {
 
 package_manjaro-settings-manager-knotifier() {
   pkgdesc+=" (Notifier for Plasma 5)"
-  depends=('knotifications5' 'manjaro-settings-manager')
+  depends=(
+    'knotifications5'
+    'manjaro-settings-manager'
+  )
   conflicts=('manjaro-settings-manager-notifier')
   replaces=('manjaro-settings-manager-kde-notifier')
 
