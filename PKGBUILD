@@ -115,7 +115,8 @@ package_manjaro-settings-manager-kcm-qt6() {
   rm -rf "$pkgdir"/etc/
   rm -rf "$pkgdir"/usr/bin/
   rm -rf "$pkgdir"/usr/lib/{kf6,plugins}/
-  rm -rf "$pkgdir"/usr/share/{applications,dbus-1,icons,polkit-1}/
+  rm -f "$pkgdir"/usr/share/applications/{"$pkgbase",msm_notifier_settings,msm_kde_notifier_settings}.desktop
+  rm -rf "$pkgdir"/usr/share/{dbus-1,icons,polkit-1}/
 }
 
 package_manjaro-settings-manager-notifier-qt6() {
