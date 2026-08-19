@@ -80,7 +80,7 @@ check() {
 package_manjaro-settings-manager-qt6() {
   optdepends=(
     'manjaro-settings-manager-notifier-qt6: Qt based'
-    'manjaro-settings-manager-kstatus: Knotifications based'
+    'manjaro-settings-manager-kstatus: KStatusNotifierItem based'
   )
   provides=('manjaro-settings-manager')
   conflicts=(
