@@ -3,14 +3,13 @@
 
 pkgbase=manjaro-settings-manager
 pkgname=(
-  'manjaro-settings-manager'
-#  'manjaro-settings-manager-kcm'
-  'manjaro-settings-manager-notifier'
-  'manjaro-settings-manager-knotifier'
+  'manjaro-settings-manager-qt6'
+  # 'manjaro-settings-manager-kcm-qt6'
+  'manjaro-settings-manager-notifier-qt6'
+  'manjaro-settings-manager-kstatus-notifier'
 )
-pkgver=0.5.8
-pkgrel=9
-_commit=95b71db3ab1e4ed74c3c320bebdc7d7fbf98c58e
+pkgver=0.6.0
+pkgrel=1
 pkgdesc="Manjaro Linux System Settings Tool"
 arch=('x86_64')
 url="https://gitlab.manjaro.org/applications/manjaro-settings-manager"
@@ -18,48 +17,50 @@ license=('GPL-3.0-or-later')
 depends=(
   'ckbcomp'
   'hicolor-icon-theme'
-  'hwinfo<=26'
+  'hwinfo'
   'icu'
-  'kauth5'
-  'kcoreaddons5'
-  'kitemmodels5'
-  'qt5-base'
+  'kauth'
+  'kcoreaddons'
+  'kitemmodels'
+  'qt6-base'
   'xdg-utils'
 )
 makedepends=(
   'extra-cmake-modules'
   'git'
-  'kcmutils5'
-  'kconfigwidgets5'
-  'kdoctools5'
-  'knotifications5'
-  'qt5-tools'
+  'kcmutils'
+  'kconfigwidgets'
+  'kdoctools'
+  'kstatusnotifieritem'
+  'qt6-tools'
 )
-checkdepends=('appstream')
-# source=("git+https://gitlab.manjaro.org/applications/manjaro-settings-manager.git#tag=$pkgver")
+checkdepends=(
+  'appstream'
+  'desktop-file-utils'
+)
+_commit=ba9f2824448b3c49b63e784e86d2f00d71158ac2  # branch/qt6
 source=("git+https://gitlab.manjaro.org/applications/manjaro-settings-manager.git#commit=${_commit}")
-sha256sums=('a1c5aee40456e2ba4dad89a1af5e7cc25e99b9e01bb16316d7c36e27812ed29a')
+sha256sums=('8d96b9cc074b152f8423b33e44053d91b6d49d4620963ce3a2805a49f475067e')
 
 prepare() {
   cd "$pkgbase"
+
+  # Bump PROJECT_VERSION
+  sed -i "s/0.5.8/$pkgver/g" CMakeLists.txt
 }
 
 build() {
+  export CFLAGS+=" -ffat-lto-objects"
+  export CXXFLAGS+=" -ffat-lto-objects"
+
   local cmake_options=(
     -B build
     -S "$pkgbase"
     -D CMAKE_BUILD_TYPE='RelWithDebInfo'
     -D CMAKE_INSTALL_PREFIX='/usr'
-    -D CMAKE_CXX_STANDARD='17'
-    -D CMAKE_CXX_STANDARD_REQUIRED='ON'
-    -D CMAKE_CXX_EXTENSIONS='OFF'
-    -D KDE_INSTALL_LIBDIR='lib'
-    -D KDE_INSTALL_USE_QT_SYS_PATHS='ON'
-    -D KDE_INSTALL_SYSCONFDIR='/etc'
-    -D CMAKE_POLICY_VERSION_MINIMUM='3.5'
   )
-    cmake "${cmake_options[@]}"
-    cmake --build build
+  cmake "${cmake_options[@]}"
+  cmake --build build
 }
 
 check() {
@@ -69,61 +70,84 @@ check() {
     --parallel $(nproc)
   )
   ctest "${ctest_flags[@]}"
+
+  cd "$pkgbase"
+  desktop-file-validate "src/msm/$pkgbase.desktop"
+  desktop-file-validate src/notifier/notifier/msm_notifier_settings.desktop
+  desktop-file-validate src/notifier/notifier_kde/msm_kde_notifier_settings.desktop
 }
 
-package_manjaro-settings-manager() {
+package_manjaro-settings-manager-qt6() {
   optdepends=(
-    'manjaro-settings-manager-notifier: qt-based'
-    'manjaro-settings-manager-knotifier: knotifications-based'
+    'manjaro-settings-manager-notifier-qt6: Qt based'
+    'manjaro-settings-manager-kstatus: Knotifications based'
   )
-  conflicts=('kcm-msm')
-
-  DESTDIR="$pkgdir" cmake --install build/
-
-  rm -rf "$pkgdir"/usr/bin/msm_notifier
-  rm -rf "$pkgdir"/usr/bin/msm_kde_notifier
-  rm -rf "$pkgdir"/usr/lib/qt
-  rm -rf "$pkgdir"/usr/share/systemsettings/categories/
-  rm -rf "$pkgdir"/usr/share/kservices5
-  rm -rf "$pkgdir"/usr/share/applications/msm_notifier_settings.desktop
-  rm -rf "$pkgdir"/usr/share/applications/msm_kde_notifier_settings.desktop
-  rm -rf "$pkgdir"/etc/xdg
-}
-
-package_manjaro-settings-manager-kcm() {
-  pkgdesc+=" (KCM for Plasma 5)"
-  depends=(
-    'kcmutils5'
-    'kconfigwidgets5'
+  provides=('manjaro-settings-manager')
+  conflicts=(
+    'kcm-msm'
     'manjaro-settings-manager'
   )
+
+  DESTDIR="$pkgdir" cmake --install build
+
+  rm -f "$pkgdir"/usr/bin/msm_notifier
+  rm -f "$pkgdir"/usr/bin/msm_kde_notifier
+  rm -rf "$pkgdir"/usr/lib/qt/
+  rm -rf "$pkgdir"/usr/share/systemsettings/
+  rm -rf "$pkgdir"/usr/share/kservices5/
+  rm -f "$pkgdir"/usr/share/applications/msm_notifier_settings.desktop
+  rm -f "$pkgdir"/usr/share/applications/msm_kde_notifier_settings.desktop
+  rm -rf "$pkgdir"/etc/
+}
+
+package_manjaro-settings-manager-kcm-qt6() {
+  pkgdesc+=" (KCM for Plasma 6)"
+  depends=(
+    'kcmutils'
+    'kconfigwidgets'
+    'manjaro-settings-manager-qt6'
+  )
+  provides=('manjaro-settings-manager-kcm')
+  conflicts=('manjaro-settings-manager-kcm')
   replaces=('kcm-msm')
 
   DESTDIR="$pkgdir" cmake --install build
 
-  rm -rf "$pkgdir"/etc
-  rm -rf "$pkgdir"/usr/bin
-  rm -rf "$pkgdir"/usr/lib/kauth
-  rm -rf "$pkgdir"/usr/share/{applications,dbus-1,icons,polkit-1}
+  rm -rf "$pkgdir"/etc/
+  rm -rf "$pkgdir"/usr/bin/
+  rm -rf "$pkgdir"/usr/lib/{kf6,plugins}/
+  rm -rf "$pkgdir"/usr/share/{applications,dbus-1,icons,kservices5,polkit-1}/
 }
 
-package_manjaro-settings-manager-notifier() {
+package_manjaro-settings-manager-notifier-qt6() {
   pkgdesc+=" (Notifier)"
-  depends=('manjaro-settings-manager')
-  provides=('manjaro-settings-manager-kde-notifier')
-  conflicts=('manjaro-settings-manager-kde-notifier')
+  depends=('manjaro-settings-manager-qt6')
+  provides=(
+    'manjaro-settings-manager-kde-notifier'
+    'manjaro-settings-manager-notifier'
+  )
+  conflicts=(
+    'manjaro-settings-manager-kde-notifier'
+    'manjaro-settings-manager-notifier'
+  )
 
   DESTDIR="$pkgdir" cmake --install build/src/notifier/notifier
 }
 
-package_manjaro-settings-manager-knotifier() {
-  pkgdesc+=" (Notifier for Plasma 5)"
+package_manjaro-settings-manager-kstatus-notifier() {
+  pkgdesc+=" (KStatus Notifier for Plasma 6)"
   depends=(
-    'knotifications5'
-    'manjaro-settings-manager'
+    'kstatusnotifieritem'
+    'manjaro-settings-manager-qt6'
   )
-  conflicts=('manjaro-settings-manager-notifier')
-  replaces=('manjaro-settings-manager-kde-notifier')
+  conflicts=(
+    'manjaro-settings-manager-notifier'
+    'manjaro-settings-manager-knotifier'
+  )
+  replaces=(
+    'manjaro-settings-manager-kde-notifier'
+    'manjaro-settings-manager-knotifier'
+  )
 
   DESTDIR="$pkgdir" cmake --install build/src/notifier/notifier_kde
 }
