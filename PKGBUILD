@@ -4,7 +4,7 @@
 pkgbase=manjaro-settings-manager
 pkgname=(
   'manjaro-settings-manager-qt6'
-  # 'manjaro-settings-manager-kcm-qt6'
+  'manjaro-settings-manager-kcm-qt6'
   'manjaro-settings-manager-notifier-qt6'
   'manjaro-settings-manager-kstatus-notifier'
 )
@@ -38,9 +38,9 @@ checkdepends=(
   'appstream'
   'desktop-file-utils'
 )
-_commit=ba9f2824448b3c49b63e784e86d2f00d71158ac2  # branch/qt6
+_commit=43e192cbd6c2213a6a7a64d3a803f074884cffe8  # branch/qt6
 source=("git+https://gitlab.manjaro.org/applications/manjaro-settings-manager.git#commit=${_commit}")
-sha256sums=('8d96b9cc074b152f8423b33e44053d91b6d49d4620963ce3a2805a49f475067e')
+sha256sums=('94530e3fdb4d1160eb70d13ad86c474766ea71eaf1d51a25e10ae08e0bd55b16')
 
 prepare() {
   cd "$pkgbase"
@@ -94,7 +94,6 @@ package_manjaro-settings-manager-qt6() {
   rm -f "$pkgdir"/usr/bin/msm_kde_notifier
   rm -rf "$pkgdir"/usr/lib/qt/
   rm -rf "$pkgdir"/usr/share/systemsettings/
-  rm -rf "$pkgdir"/usr/share/kservices5/
   rm -f "$pkgdir"/usr/share/applications/msm_notifier_settings.desktop
   rm -f "$pkgdir"/usr/share/applications/msm_kde_notifier_settings.desktop
   rm -rf "$pkgdir"/etc/
@@ -116,7 +115,7 @@ package_manjaro-settings-manager-kcm-qt6() {
   rm -rf "$pkgdir"/etc/
   rm -rf "$pkgdir"/usr/bin/
   rm -rf "$pkgdir"/usr/lib/{kf6,plugins}/
-  rm -rf "$pkgdir"/usr/share/{applications,dbus-1,icons,kservices5,polkit-1}/
+  rm -rf "$pkgdir"/usr/share/{applications,dbus-1,icons,polkit-1}/
 }
 
 package_manjaro-settings-manager-notifier-qt6() {
