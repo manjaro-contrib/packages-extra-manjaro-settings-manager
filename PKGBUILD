@@ -24,6 +24,7 @@ depends=(
   'kitemmodels'
   'qt6-base'
   'xdg-utils'
+  'xorg-xset'
 )
 makedepends=(
   'extra-cmake-modules'
@@ -38,6 +39,7 @@ checkdepends=(
   'appstream'
   'desktop-file-utils'
 )
+options=('!lto')
 _commit=43e192cbd6c2213a6a7a64d3a803f074884cffe8  # branch/qt6
 source=("git+https://gitlab.manjaro.org/applications/manjaro-settings-manager.git#commit=${_commit}")
 sha256sums=('94530e3fdb4d1160eb70d13ad86c474766ea71eaf1d51a25e10ae08e0bd55b16')
@@ -50,9 +52,6 @@ prepare() {
 }
 
 build() {
-  export CFLAGS+=" -ffat-lto-objects"
-  export CXXFLAGS+=" -ffat-lto-objects"
-
   local cmake_options=(
     -B build
     -S "$pkgbase"
@@ -115,7 +114,7 @@ package_manjaro-settings-manager-kcm-qt6() {
   rm -rf "$pkgdir"/etc/
   rm -rf "$pkgdir"/usr/bin/
   rm -rf "$pkgdir"/usr/lib/{kf6,plugins}/
-  rm -f "$pkgdir"/usr/share/applications/{"$pkgbase",msm_notifier_settings,msm_kde_notifier_settings}.desktop
+  rm -rf "$pkgdir"/usr/share/{applications,dbus-1,icons,polkit-1}/
   rm -rf "$pkgdir"/usr/share/{dbus-1,icons,polkit-1}/
 }
 
