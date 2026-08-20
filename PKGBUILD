@@ -9,7 +9,7 @@ pkgname=(
   'manjaro-settings-manager-knotifier'
 )
 pkgver=0.5.8
-pkgrel=9
+pkgrel=10
 _commit=95b71db3ab1e4ed74c3c320bebdc7d7fbf98c58e
 pkgdesc="Manjaro Linux System Settings Tool"
 arch=('x86_64')
@@ -25,6 +25,7 @@ depends=(
   'kitemmodels5'
   'qt5-base'
   'xdg-utils'
+  'xorg-xset'
 )
 makedepends=(
   'extra-cmake-modules'
@@ -35,7 +36,10 @@ makedepends=(
   'knotifications5'
   'qt5-tools'
 )
-checkdepends=('appstream')
+checkdepends=(
+  'appstream'
+  'desktop-file-utils'
+)
 # source=("git+https://gitlab.manjaro.org/applications/manjaro-settings-manager.git#tag=$pkgver")
 source=("git+https://gitlab.manjaro.org/applications/manjaro-settings-manager.git#commit=${_commit}")
 sha256sums=('a1c5aee40456e2ba4dad89a1af5e7cc25e99b9e01bb16316d7c36e27812ed29a')
@@ -69,6 +73,11 @@ check() {
     --parallel $(nproc)
   )
   ctest "${ctest_flags[@]}"
+
+  cd "$pkgbase"
+  desktop-file-validate "src/msm/$pkgbase.desktop"
+  desktop-file-validate src/notifier/notifier/msm_notifier_settings.desktop
+  desktop-file-validate src/notifier/notifier_kde/msm_kde_notifier_settings.desktop
 }
 
 package_manjaro-settings-manager() {
