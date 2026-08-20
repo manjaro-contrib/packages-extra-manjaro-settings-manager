@@ -39,15 +39,13 @@ checkdepends=(
   'appstream'
   'desktop-file-utils'
 )
-_commit=43e192cbd6c2213a6a7a64d3a803f074884cffe8  # branch/qt6
+_commit=fdf755184c1bc31823ead6f442a1f8372f13d49e  # branch/qt6
 source=("git+https://gitlab.manjaro.org/applications/manjaro-settings-manager.git#commit=${_commit}")
-sha256sums=('94530e3fdb4d1160eb70d13ad86c474766ea71eaf1d51a25e10ae08e0bd55b16')
+sha256sums=('c1f112df8d939fadba16511f0fa5cfc51ca952ed06fb7d1f5d670ae657117d1b')
 
 prepare() {
   cd "$pkgbase"
 
-  # Bump PROJECT_VERSION
-  sed -i "s/0.5.8/$pkgver/g" CMakeLists.txt
 }
 
 build() {
@@ -95,7 +93,8 @@ package_manjaro-settings-manager-qt6() {
   rm -rf "$pkgdir"/etc/
 
   rm -rf "$pkgdir"/usr/share/applications/
-  install -Dm644 "src/msm/$pkgbase.desktop" -t "$pkgdir"/usr/share/applications/
+  install -Dm644 "$pkgbase/src/msm/$pkgbase.desktop" -t \
+    "$pkgdir"/usr/share/applications/
 }
 
 package_manjaro-settings-manager-kcm-qt6() {
@@ -109,17 +108,17 @@ package_manjaro-settings-manager-kcm-qt6() {
   conflicts=('manjaro-settings-manager-kcm')
   replaces=('kcm-msm')
 
-  DESTDIR="$pkgdir" cmake --install build
+  cd "$pkgbase"
 
-  rm -rf "$pkgdir"/etc/
-  rm -rf "$pkgdir"/usr/bin/
-  rm -rf "$pkgdir"/usr/lib/kf6/
-  rm -f "$pkgdir"/usr/share/applications/{"$pkgbase",msm_notifier_settings,msm_kde_notifier_settings}.desktop
-  rm -rf "$pkgdir"/usr/share/{dbus-1,icons,polkit-1}/
+  ## FIXME Find proper install directory for modules
+  for module in kernel language_packages mhwd; do
+    install -Dm755 "src/modules/${module}/msm_${module}.so" -t "$pkgdir/usr/lib/qt6/"
+    install -Dm644 "src/modules/${module}/msm_${module}.desktop" -t \
+      "$pkgdir/usr/share/applications/"
+  done
 
-  ## FIXME Move KCM modules to proper directory
-  install -d "$pkgdir"/usr/lib/qt6/
-  mv -f "$pkgdir"/usr/lib/plugins "$pkgdir"/usr/lib/qt6/
+  install -Dm644 src/manjaro-category.desktop -t \
+    "$pkgdir/usr/share/systemsettings/categories/"
 }
 
 package_manjaro-settings-manager-notifier-qt6() {
