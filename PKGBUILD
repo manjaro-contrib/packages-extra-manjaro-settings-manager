@@ -4,7 +4,7 @@
 pkgbase=manjaro-settings-manager
 pkgname=(
   'manjaro-settings-manager-qt6'
-  'manjaro-settings-manager-kcm-qt6'
+  # 'manjaro-settings-manager-kcm-qt6'
   'manjaro-settings-manager-notifier-qt6'
   'manjaro-settings-manager-kstatus-notifier'
 )
@@ -75,8 +75,8 @@ check() {
 
 package_manjaro-settings-manager-qt6() {
   optdepends=(
-    'manjaro-settings-manager-notifier-qt6: Qt based'
-    'manjaro-settings-manager-kstatus: KStatusNotifierItem based'
+    'manjaro-settings-manager-notifier-qt6: Kernel release notifications'
+    'manjaro-settings-manager-kstatus: Kernel release notifications (Plasma 6)'
   )
   provides=('manjaro-settings-manager')
   conflicts=(
@@ -105,7 +105,10 @@ package_manjaro-settings-manager-kcm-qt6() {
     'manjaro-settings-manager-qt6'
   )
   provides=('manjaro-settings-manager-kcm')
-  conflicts=('manjaro-settings-manager-kcm')
+  conflicts=(
+    'kcm-msm'
+    'manjaro-settings-manager-kcm'
+  )
   replaces=('kcm-msm')
 
   cd "$pkgbase"
@@ -124,10 +127,7 @@ package_manjaro-settings-manager-kcm-qt6() {
 package_manjaro-settings-manager-notifier-qt6() {
   pkgdesc+=" (Notifier)"
   depends=('manjaro-settings-manager-qt6')
-  provides=(
-    'manjaro-settings-manager-kde-notifier'
-    'manjaro-settings-manager-notifier'
-  )
+  provides=('manjaro-settings-manager-notifier')
   conflicts=(
     'manjaro-settings-manager-kde-notifier'
     'manjaro-settings-manager-notifier'
@@ -137,11 +137,12 @@ package_manjaro-settings-manager-notifier-qt6() {
 }
 
 package_manjaro-settings-manager-kstatus-notifier() {
-  pkgdesc+=" (KStatus Notifier for Plasma 6)"
+  pkgdesc+=" (Notifier for Plasma 6)"
   depends=(
     'kstatusnotifieritem'
     'manjaro-settings-manager-qt6'
   )
+  provides=('manjaro-settings-manager-notifier')
   conflicts=(
     'manjaro-settings-manager-notifier'
     'manjaro-settings-manager-knotifier'
