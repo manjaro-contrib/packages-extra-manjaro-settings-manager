@@ -76,7 +76,7 @@ check() {
 package_manjaro-settings-manager-qt6() {
   optdepends=(
     'manjaro-settings-manager-notifier-qt6: Kernel release notifications'
-    'manjaro-settings-manager-kstatus: Kernel release notifications (Plasma 6)'
+    'manjaro-settings-manager-kstatus-notifier: Kernel release notifications (Plasma 6)'
   )
   provides=('manjaro-settings-manager')
   conflicts=(
