@@ -9,7 +9,7 @@ pkgname=(
   'manjaro-settings-manager-kstatus-notifier'
 )
 pkgver=0.6.0
-pkgrel=2
+pkgrel=3
 pkgdesc="Manjaro Linux System Settings Tool"
 arch=('x86_64')
 url="https://gitlab.manjaro.org/applications/manjaro-settings-manager"
@@ -147,10 +147,7 @@ package_manjaro-settings-manager-kstatus-notifier() {
     'manjaro-settings-manager-notifier'
     'manjaro-settings-manager-knotifier'
   )
-  replaces=(
-    'manjaro-settings-manager-kde-notifier'
-    'manjaro-settings-manager-knotifier'
-  )
+  replaces=('manjaro-settings-manager-kde-notifier')
 
   DESTDIR="$pkgdir" cmake --install build/src/notifier/notifier_kde
 }
